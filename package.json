@@ -1,0 +1,26 @@
+{
+  "name": "nextjs-expo-saas-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm --workspace=apps/web run dev",
+    "dev:web": "npm --workspace=apps/web run dev",
+    "build:web": "npm --workspace=apps/web run build",
+    "db:generate": "npm --workspace=apps/web run db:generate",
+    "db:push": "npm --workspace=apps/web run db:push",
+    "db:migrate": "npm --workspace=apps/web run db:migrate",
+    "db:studio": "npm --workspace=apps/web run db:studio",
+    "db:seed": "npm --workspace=apps/web run db:seed",
+    "make:feature": "npm --workspace=apps/web run make:feature",
+    "test": "npm --workspace=apps/web run test"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "typescript": "^5",
+    "vite": "^8.3.5"
+  }
+}

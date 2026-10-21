@@ -1,0 +1,3 @@
+module.exports=[[62735,a=>{var b=a.i(7997),c=a.i(30921);a.s(["default",0,function({children:a}){return(0,b.jsx)(c.UnifiedDashboardLayout,{children:a})}])},81549,a=>{let b=(0,a.i(11857).registerClientReference)(function(){throw Error("Attempted to call UnifiedDashboardLayout() from the server but UnifiedDashboardLayout is on the client. It's not possible to invoke a client function from the server, it can only be rendered as a Component or passed to props of a Client Component.")},"[project]/apps/web/src/shared/layouts/UnifiedDashboardLayout.tsx","UnifiedDashboardLayout");a.s(["UnifiedDashboardLayout",0,b])},30921,a=>{var b=a.i(81549);a.n(b)}],90022,function(a){a.n(a.i(62735))}];
+
+//# sourceMappingURL=apps_web_src_0glbtfpty3f5t._.js.map

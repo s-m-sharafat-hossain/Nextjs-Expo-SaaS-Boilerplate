@@ -1,0 +1,622 @@
+// apps/web/prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────
+
+enum Role {
+  ADMIN
+  PROVIDER
+  CONSUMER
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum KycStatus {
+  NOT_SUBMITTED
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum PayoutStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PAID
+}
+
+enum PlanType {
+  FREE
+  STARTER
+  PRO
+  AGENCY
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+  INCOMPLETE
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+enum DisputeStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED_REFUND
+  REJECTED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+}
+
+enum FileType {
+  IMAGE
+  PDF
+  CSV
+  VIDEO
+  AUDIO
+  OTHER
+}
+
+// ─────────────────────────────────────────────
+// 1. CORE USER & AUTHENTICATION
+// ─────────────────────────────────────────────
+
+model User {
+  id                String               @id @default(cuid())
+  name              String
+  email             String               @unique
+  emailVerified     DateTime?
+  passwordHash      String?              // null for OAuth users
+  image             String?              // Avatar URL
+  phone             String?
+  bio               String?              @db.Text
+  role              Role                 @default(CONSUMER)
+  plan              PlanType             @default(FREE)
+  credits           Int                  @default(25)
+  referralCode      String               @unique @default(cuid())
+  referredBy        String?
+  isActive          Boolean              @default(true)
+  isBanned          Boolean              @default(false)
+  kycStatus         KycStatus            @default(NOT_SUBMITTED)
+
+  // 2FA Security
+  twoFactorSecret   String?              // TOTP secret
+  twoFactorEnabled  Boolean              @default(false)
+
+  // Stripe Billing Customer
+  stripeCustomerId  String?              @unique
+
+  // Relations
+  accounts          Account[]
+  sessions          Session[]
+  subscription      Subscription?
+  wallet            Wallet?
+  kycDocuments      KycDocument[]
+  workspaceMembers  WorkspaceMember[]
+
+  // Provider side
+  providedServices  ListingService[]     @relation("ProviderServices")
+  providerBookings  BookingOrder[]       @relation("ProviderBookings")
+  providerReviews   Review[]             @relation("ProviderReviews")
+  availabilitySlots AvailabilitySlot[]
+  payoutRequests    PayoutRequest[]
+
+  // Consumer side
+  consumerBookings  BookingOrder[]       @relation("ConsumerBookings")
+  consumerReviews   Review[]             @relation("ConsumerReviews")
+  disputesInitiated DisputeRefund[]      @relation("ConsumerDisputes")
+
+  // Core Platform features
+  usageLogs         UsageLog[]
+  mediaFiles        MediaFile[]
+  aiGenerations     AiGeneration[]
+  payments          PaymentTransaction[]
+  tickets           SupportTicket[]
+  notifications     Notification[]
+  chatSessions      ChatSession[]
+  auditLogs         AuditLog[]
+  feedbacks         Feedback[]
+  apiKeys           ApiKey[]
+
+  createdAt         DateTime             @default(now())
+  updatedAt         DateTime             @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId], name: "provider_providerAccountId")
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+// ─────────────────────────────────────────────
+// 2. MULTI-TENANCY & WORKSPACES
+// ─────────────────────────────────────────────
+
+model Workspace {
+  id          String            @id @default(cuid())
+  name        String
+  slug        String            @unique
+  logoUrl     String?
+  members     WorkspaceMember[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@map("workspaces")
+}
+
+model WorkspaceMember {
+  id          String        @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        WorkspaceRole @default(MEMBER)
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime      @default(now())
+
+  @@unique([workspaceId, userId])
+  @@map("workspace_members")
+}
+
+// ─────────────────────────────────────────────
+// 3. KYC COMPLIANCE & VERIFICATION
+// ─────────────────────────────────────────────
+
+model KycDocument {
+  id              String    @id @default(cuid())
+  userId          String
+  documentType    String    // "PASSPORT" | "NATIONAL_ID" | "MEDICAL_LICENSE" | "BUSINESS_CERT"
+  documentNumber  String?
+  documentFrontUrl String
+  documentBackUrl String?
+  status          KycStatus @default(PENDING)
+  rejectionReason String?
+  reviewedAt      DateTime?
+  reviewedBy      String?   // Admin User ID
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("kyc_documents")
+}
+
+// ─────────────────────────────────────────────
+// 4. PROVIDER WALLET & ESCROW PAYOUTS
+// ─────────────────────────────────────────────
+
+model Wallet {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  balance        Float    @default(0.0) // Available for withdrawal
+  pendingBalance Float    @default(0.0) // In escrow until booking completion
+  totalEarned    Float    @default(0.0)
+  totalWithdrawn Float    @default(0.0)
+  currency       String   @default("USD")
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  updatedAt      DateTime @updatedAt
+
+  @@map("wallets")
+}
+
+model PayoutRequest {
+  id             String       @id @default(cuid())
+  userId         String
+  amount         Float
+  platformFee    Float        @default(0.0)
+  netAmount      Float
+  currency       String       @default("USD")
+  payoutMethod   String       // "BANK_TRANSFER" | "PAYPAL" | "BKASH" | "STRIPE_CONNECT"
+  accountDetails Json         // Bank account / bKash number / routing
+  status         PayoutStatus @default(PENDING)
+  rejectionReason String?
+  processedAt    DateTime?
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@map("payout_requests")
+}
+
+// ─────────────────────────────────────────────
+// 5. SERVICES, LISTINGS & SCHEDULING
+// ─────────────────────────────────────────────
+
+model ListingService {
+  id              String            @id @default(cuid())
+  providerId      String
+  title           String
+  slug            String            @unique
+  description     String            @db.Text
+  category        String
+  price           Float
+  currency        String            @default("USD")
+  durationMinutes Int               @default(60)
+  imageUrl        String?
+  tags            String[]          @default([])
+  isActive        Boolean           @default(true)
+  provider        User              @relation("ProviderServices", fields: [providerId], references: [id], onDelete: Cascade)
+  bookings        BookingOrder[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  @@index([providerId])
+  @@index([category])
+  @@map("listing_services")
+}
+
+model AvailabilitySlot {
+  id          String   @id @default(cuid())
+  providerId  String
+  dayOfWeek   Int      // 0 = Sunday, 1 = Monday, ... 6 = Saturday
+  startTime   String   // "09:00"
+  endTime     String   // "17:00"
+  isAvailable Boolean  @default(true)
+  provider    User     @relation(fields: [providerId], references: [id], onDelete: Cascade)
+
+  @@index([providerId])
+  @@map("availability_slots")
+}
+
+// ─────────────────────────────────────────────
+// 6. BOOKINGS, ORDERS & FULFILLMENT
+// ─────────────────────────────────────────────
+
+model BookingOrder {
+  id             String         @id @default(cuid())
+  orderNumber    String         @unique // e.g. "ORD-2026-0001"
+  serviceId      String
+  providerId     String
+  consumerId     String
+  status         BookingStatus  @default(PENDING)
+  paymentStatus  PaymentStatus  @default(PENDING)
+  scheduledAt    DateTime
+  durationMin    Int            @default(60)
+  amount         Float
+  platformFee    Float          @default(0.0)
+  providerEarning Float         @default(0.0)
+  currency       String         @default("USD")
+  notes          String?        @db.Text
+  meetUrl        String?        // Video consultation URL
+  invoiceUrl     String?        // PDF Receipt URL
+
+  service        ListingService @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  provider       User           @relation("ProviderBookings", fields: [providerId], references: [id], onDelete: Restrict)
+  consumer       User           @relation("ConsumerBookings", fields: [consumerId], references: [id], onDelete: Restrict)
+  review         Review?
+  dispute        DisputeRefund?
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@index([providerId])
+  @@index([consumerId])
+  @@index([status])
+  @@map("booking_orders")
+}
+
+// ─────────────────────────────────────────────
+// 7. REVIEWS, RATINGS & DISPUTE RESOLUTION
+// ─────────────────────────────────────────────
+
+model Review {
+  id          String       @id @default(cuid())
+  bookingId   String       @unique
+  providerId  String
+  consumerId  String
+  rating      Int          // 1 to 5 stars
+  comment     String       @db.Text
+  reply       String?      @db.Text // Provider response
+  booking     BookingOrder @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  provider    User         @relation("ProviderReviews", fields: [providerId], references: [id], onDelete: Cascade)
+  consumer    User         @relation("ConsumerReviews", fields: [consumerId], references: [id], onDelete: Cascade)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([providerId])
+  @@index([consumerId])
+  @@map("reviews")
+}
+
+model DisputeRefund {
+  id              String        @id @default(cuid())
+  bookingId       String        @unique
+  consumerId      String
+  providerId      String
+  reason          String        @db.Text
+  status          DisputeStatus @default(OPEN)
+  resolutionNotes String?       @db.Text
+  refundAmount    Float?
+  booking         BookingOrder  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  consumer        User          @relation("ConsumerDisputes", fields: [consumerId], references: [id], onDelete: Cascade)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([consumerId])
+  @@index([status])
+  @@map("dispute_refunds")
+}
+
+// ─────────────────────────────────────────────
+// 8. BILLING, PAYMENTS & RECURRING SUBSCRIPTIONS
+// ─────────────────────────────────────────────
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  stripeSubscriptionId String             @unique
+  stripeCustomerId     String
+  stripePriceId        String
+  planType             PlanType           @default(FREE)
+  status               SubscriptionStatus @default(ACTIVE)
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean            @default(false)
+  userId               String             @unique
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  @@map("subscriptions")
+}
+
+model PaymentTransaction {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  gateway       String        // "STRIPE" | "SSLCOMMERZ" | "BKASH" | "PAYPAL" | "MANUAL_BANK"
+  planId        String?
+  baseAmount    Float
+  discount      Float         @default(0)
+  taxAmount     Float         @default(0)
+  finalAmount   Float
+  currency      String        @default("USD")
+  creditsAdded  Int           @default(0)
+  couponCode    String?
+  externalTrxId String?       // Gateway transaction ID
+  manualTrxId   String?       // User-submitted bKash/Bank TrxID
+  receiptUrl    String?       // PDF invoice download URL
+  status        PaymentStatus @default(PENDING)
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+
+  @@index([userId])
+  @@index([status])
+  @@map("payment_transactions")
+}
+
+model Coupon {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  discountPercent Int
+  maxUses         Int       @default(100)
+  usedCount       Int       @default(0)
+  isActive        Boolean   @default(true)
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@map("coupons")
+}
+
+// ─────────────────────────────────────────────
+// 9. AI ENGINE, CREDITS & n8n CHATBOT
+// ─────────────────────────────────────────────
+
+model UsageLog {
+  id          String   @id @default(cuid())
+  action      String   // "ai_chat", "booking_create", "pdf_export", "payout_request"
+  creditsUsed Int      @default(0)
+  metadata    String?  @db.Text
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("usage_logs")
+}
+
+model AiGeneration {
+  id          String   @id @default(cuid())
+  toolType    String
+  prompt      String   @db.Text
+  output      String   @db.Text
+  creditsUsed Int      @default(2)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@map("ai_generations")
+}
+
+model ChatSession {
+  id        String    @id @default(cuid())
+  title     String?   @default("New Conversation")
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("chat_sessions")
+}
+
+model Message {
+  id            String      @id @default(cuid())
+  role          String      // "user" | "assistant" | "system"
+  content       String      @db.Text
+  chatSessionId String
+  chatSession   ChatSession @relation(fields: [chatSessionId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+
+  @@index([chatSessionId])
+  @@map("messages")
+}
+
+// ─────────────────────────────────────────────
+// 10. MEDIA, TICKETS, NOTIFICATIONS & AUDIT
+// ─────────────────────────────────────────────
+
+model MediaFile {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  key       String   // UUID / S3 Key
+  size      Int
+  mimeType  String
+  fileType  FileType @default(OTHER)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("media_files")
+}
+
+model SupportTicket {
+  id         String       @id @default(cuid())
+  subject    String
+  message    String       @db.Text
+  adminReply String?      @db.Text
+  status     TicketStatus @default(OPEN)
+  userId     String
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+
+  @@index([userId])
+  @@map("support_tickets")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  title     String
+  message   String
+  link      String?
+  isRead    Boolean  @default(false)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("notifications")
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  type      String   @default("FEEDBACK") // "FEEDBACK" | "BUG" | "FEATURE"
+  message   String   @db.Text
+  rating    Int?
+  email     String?
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("feedbacks")
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  name       String
+  key        String    @unique
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scopes     String[]  @default(["read"])
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  isActive   Boolean   @default(true)
+  createdAt  DateTime  @default(now())
+
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // "AUTH_LOGIN", "KYC_APPROVED", "PAYOUT_REQUESTED", "ROLE_CHANGED"
+  entity    String
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@map("audit_logs")
+}

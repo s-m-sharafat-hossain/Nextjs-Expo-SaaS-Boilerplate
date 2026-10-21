@@ -1,0 +1,15 @@
+{
+  "node": {
+    "70a25192200c54a576449aa6dbe67053644c1dabd6": {
+      "workers": {
+        "app/page": {
+          "moduleId": "[project]/apps/web/.next-internal/server/app/page/actions.js { ACTIONS_MODULE0 => \"[project]/apps/web/src/features/chat-n8n/chat.action.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false
+        }
+      },
+      "exportedName": "sendMessageAction",
+      "filename": "apps/web/src/features/chat-n8n/chat.action.ts"
+    }
+  },
+  "edge": {}
+}
