@@ -1022,7 +1022,7 @@ const initialState = {
     setTheme: ()=>null
 };
 const ThemeProviderContext = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["createContext"])(initialState);
-function ThemeProvider({ children, defaultTheme = "light", storageKey = "ui-theme", ...props }) {
+function ThemeProvider({ children, defaultTheme = "light", storageKey = "master-boilerplate-theme", ...props }) {
     const [theme, setTheme] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(defaultTheme);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const stored = localStorage.getItem(storageKey);
@@ -1035,12 +1035,7 @@ function ThemeProvider({ children, defaultTheme = "light", storageKey = "ui-them
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
         const root = window.document.documentElement;
         root.classList.remove("light", "dark");
-        if (theme === "system") {
-            const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-            root.classList.add(systemTheme);
-        } else {
-            root.classList.add(theme);
-        }
+        root.classList.add(theme);
         localStorage.setItem(storageKey, theme);
     }, [
         theme,
@@ -1058,7 +1053,7 @@ function ThemeProvider({ children, defaultTheme = "light", storageKey = "ui-them
         children: children
     }, void 0, false, {
         fileName: "[project]/apps/web/src/shared/design/theme-provider.tsx",
-        lineNumber: 66,
+        lineNumber: 58,
         columnNumber: 5
     }, this);
 }

@@ -249,7 +249,8 @@ __turbopack_context__.s([
 ]);
 // apps/web/src/features/chat-n8n/chat.service.ts
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$features$2f$chat$2d$n8n$2f$chat$2e$repository$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/features/chat-n8n/chat.repository.ts [app-rsc] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$shared$2f$config$2f$site$2e$config$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/shared/config/site.config.ts [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$packages$2f$shared$2f$index$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/packages/shared/index.ts [app-rsc] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$packages$2f$shared$2f$config$2f$master$2e$config$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/packages/shared/config/master.config.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$shared$2f$lib$2f$db$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/shared/lib/db.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$shared$2f$utils$2f$error$2d$handler$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/apps/web/src/shared/utils/error-handler.ts [app-rsc] (ecmascript)");
 ;
@@ -281,7 +282,7 @@ class ChatService {
                     credits: true
                 }
             });
-            const cost = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$shared$2f$config$2f$site$2e$config$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["siteConfig"].rewards.creditCostPerAiAction;
+            const cost = __TURBOPACK__imported__module__$5b$project$5d2f$packages$2f$shared$2f$config$2f$master$2e$config$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["siteConfig"].rewards.creditCostPerAiAction;
             if (user && user.credits < cost) {
                 throw new __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$shared$2f$utils$2f$error$2d$handler$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["AppError"](`Insufficient credits. This AI operation requires ${cost} credits. Please upgrade your plan or top up.`, 402);
             }
@@ -314,7 +315,7 @@ class ChatService {
         await __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$features$2f$chat$2d$n8n$2f$chat$2e$repository$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ChatRepository"].saveMessage(sessionId, "user", input.message);
         // 4. Dispatch to n8n Webhook or Intelligent Clinical Fallback
         let assistantReply = "";
-        const n8nConfig = __TURBOPACK__imported__module__$5b$project$5d2f$apps$2f$web$2f$src$2f$shared$2f$config$2f$site$2e$config$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["siteConfig"].n8n;
+        const n8nConfig = __TURBOPACK__imported__module__$5b$project$5d2f$packages$2f$shared$2f$config$2f$master$2e$config$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["siteConfig"].n8n;
         if (n8nConfig.enabled && n8nConfig.webhookUrl && !n8nConfig.webhookUrl.includes("yourdomain")) {
             try {
                 const response = await fetch(n8nConfig.webhookUrl, {

@@ -1,0 +1,10 @@
+var R=require("../../../../chunks/[turbopack]_runtime.js")("server/app/api/v1/chat/route.js")
+R.c("server/chunks/node_modules_next_02922moj_04qg._.js")
+R.c("server/chunks/node_modules_zod_v4_core_03xobcwn440g0._.js")
+R.c("server/chunks/node_modules_zod_v4_classic_1kie_irjsu3uw._.js")
+R.c("server/chunks/node_modules_zod_v4_locales_0on3-qho2_wkm._.js")
+R.c("server/chunks/[externals]_@prisma_client_1ltre0sawm6cs._.js")
+R.c("server/chunks/[root-of-the-server]__06u77t7qvezvq._.js")
+R.c("server/chunks/apps_web__next-internal_server_app_api_v1_chat_route_actions_0ql4868crd58v.js")
+R.m("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/apps/web/src/app/api/v1/chat/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/apps/web/src/app/api/v1/chat/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports
