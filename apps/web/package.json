@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@shared/config": "*",
-    "@prisma/client": "^6.19.3",
+    "@prisma/client": "^7.10.1",
     "@react-email/components": "^1.0.12",
     "@react-email/render": "^2.1.1",
     "@t3-oss/env-nextjs": "^0.12.0",
