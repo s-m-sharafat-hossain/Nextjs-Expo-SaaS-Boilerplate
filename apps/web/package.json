@@ -62,5 +62,9 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
+  },
+  "overrides": {
+    "braces": "^3.0.3",
+    "deepmerge-ts": "^8.0.0"
   }
 }

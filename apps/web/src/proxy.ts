@@ -1,5 +1,5 @@
-// src/middleware.ts
-// Next.js Edge Middleware — route protection for auth + role-based access
+// src/proxy.ts
+// Next.js Edge Proxy — route protection for auth + role-based access
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

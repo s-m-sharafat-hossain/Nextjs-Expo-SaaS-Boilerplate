@@ -110,8 +110,8 @@ __turbopack_context__.s([
     "proxy",
     ()=>proxy
 ]);
-// src/middleware.ts
-// Next.js Edge Middleware — route protection for auth + role-based access
+// src/proxy.ts
+// Next.js Edge Proxy — route protection for auth + role-based access
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$server$2e$js__$5b$middleware$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/server.js [middleware] (ecmascript)");
 ;
 // ─── Route Classification ───────────────────────────────────────────────────
