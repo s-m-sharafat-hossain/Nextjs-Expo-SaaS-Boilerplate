@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import {
   X,
   Shield,
+  ShieldAlert,
   Briefcase,
   User,
   MessageSquare,
@@ -171,6 +172,42 @@ export const ResponsiveSidebarDrawer: React.FC<ResponsiveSidebarDrawerProps> = (
               ACTIVE ROLE PORTAL
             </Text>
             <View style={styles.roleGrid}>
+              {(user?.role === "SUPER_ADMIN" || activeRole === "SUPER_ADMIN") && (
+                <TouchableOpacity
+                  onPress={() => handleRoleSelect("SUPER_ADMIN")}
+                  style={[
+                    styles.roleCard,
+                    {
+                      borderColor:
+                        activeRole === "SUPER_ADMIN"
+                          ? "#9333ea"
+                          : colors.border,
+                      backgroundColor:
+                        activeRole === "SUPER_ADMIN"
+                          ? "#9333ea15"
+                          : colors.card,
+                    },
+                  ]}
+                >
+                  <ShieldAlert
+                    size={18}
+                    color="#9333ea"
+                  />
+                  <Text
+                    style={[
+                      styles.roleCardText,
+                      {
+                        color:
+                          activeRole === "SUPER_ADMIN"
+                            ? "#9333ea"
+                            : colors.textPrimary,
+                      },
+                    ]}
+                  >
+                    Super Admin
+                  </Text>
+                </TouchableOpacity>
+              )}
               <TouchableOpacity
                 onPress={() => handleRoleSelect("ADMIN")}
                 style={[

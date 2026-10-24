@@ -40,11 +40,28 @@ export class SuperAdminController {
 
   /**
    * GET /api/v1/super-admin
-   * Fetch aggregate governance dashboard data
+   * Fetch aggregate governance dashboard data or specific dataset (?action=stats|settings|admins)
    */
   static async getDashboard(req: NextRequest) {
     try {
       await this.getVerifiedSuperAdminContext(req);
+      const { searchParams } = new URL(req.url);
+      const action = searchParams.get("action");
+
+      if (action === "stats") {
+        const stats = await SuperAdminService.getPlatformStats();
+        return ApiResponse.success(stats, "Platform stats retrieved");
+      }
+
+      if (action === "settings") {
+        const settings = await SuperAdminService.getPlatformSettings();
+        return ApiResponse.success(settings, "Platform settings retrieved");
+      }
+
+      if (action === "admins") {
+        const admins = await SuperAdminService.getAllAdmins();
+        return ApiResponse.success(admins, "Admins directory retrieved");
+      }
 
       const [stats, settings, admins, recentLogs] = await Promise.all([
         SuperAdminService.getPlatformStats(),
@@ -73,23 +90,49 @@ export class SuperAdminController {
       const context = await this.getVerifiedSuperAdminContext(req);
       const body = await req.json();
 
-      const { action } = body;
+      const action = body.action;
+
+      // Handle direct actions from mobile (e.g. { action: "ACTIVATE", targetUserId: "..." })
+      if (
+        [
+          "ACTIVATE",
+          "DEACTIVATE",
+          "DELETE",
+          "RESET_PASSWORD",
+          "SUSPEND",
+          "ADJUST_CREDITS",
+          "PROMOTE_TO_ADMIN",
+          "PROMOTE_TO_SUPER_ADMIN",
+          "DEMOTE_TO_USER",
+        ].includes(action)
+      ) {
+        const payload = body.data || body;
+        const validated = manageAdminSchema.parse({
+          targetUserId: payload.targetUserId,
+          action,
+          reason: payload.reason,
+          newPassword: payload.newPassword,
+          creditsDelta: payload.creditsDelta,
+        });
+        const result = await SuperAdminService.manageAdmin(validated, context);
+        return ApiResponse.success(result, `Action ${validated.action} executed successfully`);
+      }
 
       switch (action) {
         case "UPDATE_SETTINGS": {
-          const validated = updatePlatformSettingsSchema.parse(body.data);
+          const validated = updatePlatformSettingsSchema.parse(body.data || body);
           const updated = await SuperAdminService.updatePlatformSettings(validated, context);
           return ApiResponse.success(updated, "Platform settings updated successfully");
         }
 
         case "MANAGE_ADMIN": {
-          const validated = manageAdminSchema.parse(body.data);
+          const validated = manageAdminSchema.parse(body.data || body);
           const result = await SuperAdminService.manageAdmin(validated, context);
           return ApiResponse.success(result, `Action ${validated.action} executed successfully`);
         }
 
         case "PROMOTE_USER": {
-          const validated = promoteToAdminSchema.parse(body.data);
+          const validated = promoteToAdminSchema.parse(body.data || body);
           const result = await SuperAdminService.promoteUser(validated, context);
           return ApiResponse.success(result, `User role changed to ${validated.role} successfully`);
         }

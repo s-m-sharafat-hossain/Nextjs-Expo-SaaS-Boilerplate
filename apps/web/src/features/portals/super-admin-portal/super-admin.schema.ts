@@ -17,15 +17,19 @@ export const updatePlatformSettingsSchema = z.object({
 export const manageAdminSchema = z.object({
   targetUserId: z.string().min(1, "Target User ID is required"),
   action: z.enum([
+    "ACTIVATE",
+    "DEACTIVATE",
+    "DELETE",
+    "RESET_PASSWORD",
     "PROMOTE_TO_ADMIN",
     "PROMOTE_TO_SUPER_ADMIN",
     "DEMOTE_TO_USER",
     "SUSPEND",
-    "ACTIVATE",
     "ADJUST_CREDITS",
   ]),
   creditsDelta: z.number().optional(),
   reason: z.string().optional(),
+  newPassword: z.string().min(8).optional(),
 });
 
 export const promoteToAdminSchema = z.object({

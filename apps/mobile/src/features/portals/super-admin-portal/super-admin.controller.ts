@@ -59,14 +59,33 @@ export function useSuperAdminController() {
     }
   };
 
-  const manageAdmin = async (userId: string, action: string, creditsDelta?: number) => {
+  const manageAdmin = async (userId: string, action: string, options?: { creditsDelta?: number; newPassword?: string; reason?: string }) => {
     try {
       setIsSubmitting(true);
-      await SuperAdminMobileService.manageAdmin(userId, action, creditsDelta);
-      setSuccessMessage(`Action ${action} executed`);
+      await SuperAdminMobileService.manageAdmin(userId, action as any, options);
+      setSuccessMessage(`Action ${action} executed successfully`);
       await loadData();
     } catch (err: any) {
       setError(err?.message || "Action failed");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const activateAdmin = (userId: string) => manageAdmin(userId, "ACTIVATE");
+  const deactivateAdmin = (userId: string) => manageAdmin(userId, "DEACTIVATE");
+  const deleteAdmin = (userId: string) => manageAdmin(userId, "DELETE");
+  const resetPassword = (userId: string, newPassword?: string) =>
+    manageAdmin(userId, "RESET_PASSWORD", { newPassword });
+
+  const promoteUser = async (userId: string, role: string, reason?: string) => {
+    try {
+      setIsSubmitting(true);
+      await SuperAdminMobileService.promoteUser(userId, role, reason);
+      setSuccessMessage(`User elevated to ${role}`);
+      await loadData();
+    } catch (err: any) {
+      setError(err?.message || "Promotion failed");
     } finally {
       setIsSubmitting(false);
     }
@@ -84,5 +103,10 @@ export function useSuperAdminController() {
     toggleMaintenanceMode,
     toggleRegistration,
     manageAdmin,
+    activateAdmin,
+    deactivateAdmin,
+    deleteAdmin,
+    resetPassword,
+    promoteUser,
   };
 }

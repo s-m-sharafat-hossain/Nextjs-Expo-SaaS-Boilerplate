@@ -343,28 +343,47 @@ export const SuperAdminPortalScreen: React.FC = () => {
               </View>
 
               {admin.role !== "SUPER_ADMIN" && (
-                <View style={{ flexDirection: "row", gap: 8, marginTop: 10 }}>
-                  <TouchableOpacity
-                    style={[styles.actionBtn, { flex: 1, backgroundColor: "#6366f1", marginTop: 0 }]}
-                    onPress={() => manageAdmin(admin.id, "ADJUST_CREDITS", 100)}
-                  >
-                    <Text style={styles.actionBtnText}>+100 Credits</Text>
-                  </TouchableOpacity>
-                  {admin.isBanned ? (
+                <View style={{ marginTop: 12, gap: 8 }}>
+                  <View style={{ flexDirection: "row", gap: 8 }}>
                     <TouchableOpacity
-                      style={[styles.actionBtn, { flex: 1, backgroundColor: "#10b981", marginTop: 0 }]}
-                      onPress={() => manageAdmin(admin.id, "ACTIVATE")}
+                      style={[styles.actionBtn, { flex: 1, backgroundColor: "#6366f1", marginTop: 0 }]}
+                      onPress={() => manageAdmin(admin.id, "ADJUST_CREDITS", { creditsDelta: 100 })}
                     >
-                      <Text style={styles.actionBtnText}>Activate</Text>
+                      <Text style={styles.actionBtnText}>+100 Cr</Text>
                     </TouchableOpacity>
-                  ) : (
+
+                    {admin.isBanned ? (
+                      <TouchableOpacity
+                        style={[styles.actionBtn, { flex: 1, backgroundColor: "#10b981", marginTop: 0 }]}
+                        onPress={() => manageAdmin(admin.id, "ACTIVATE")}
+                      >
+                        <Text style={styles.actionBtnText}>Activate</Text>
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        style={[styles.actionBtn, { flex: 1, backgroundColor: "#f59e0b", marginTop: 0 }]}
+                        onPress={() => manageAdmin(admin.id, "DEACTIVATE")}
+                      >
+                        <Text style={styles.actionBtnText}>Deactivate</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+
+                  <View style={{ flexDirection: "row", gap: 8 }}>
                     <TouchableOpacity
-                      style={[styles.actionBtn, { flex: 1, backgroundColor: "#f59e0b", marginTop: 0 }]}
-                      onPress={() => manageAdmin(admin.id, "SUSPEND")}
+                      style={[styles.actionBtn, { flex: 1, backgroundColor: "#3b82f6", marginTop: 0 }]}
+                      onPress={() => manageAdmin(admin.id, "RESET_PASSWORD")}
                     >
-                      <Text style={styles.actionBtnText}>Suspend</Text>
+                      <Text style={styles.actionBtnText}>Reset Pass</Text>
                     </TouchableOpacity>
-                  )}
+
+                    <TouchableOpacity
+                      style={[styles.actionBtn, { flex: 1, backgroundColor: "#ef4444", marginTop: 0 }]}
+                      onPress={() => manageAdmin(admin.id, "DELETE")}
+                    >
+                      <Text style={styles.actionBtnText}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               )}
             </View>

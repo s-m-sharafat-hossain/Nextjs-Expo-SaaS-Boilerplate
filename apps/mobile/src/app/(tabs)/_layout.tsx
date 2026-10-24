@@ -22,21 +22,27 @@ export default function TabsLayout() {
 
   // Dynamic label based on active portal
   const exploreLabel =
-    activeRole === "ADMIN"
+    activeRole === "SUPER_ADMIN"
+      ? "Governance"
+      : activeRole === "ADMIN"
       ? "Users & KYC"
       : activeRole === "PROVIDER"
       ? "Services"
       : "Explore";
 
   const bookingsLabel =
-    activeRole === "ADMIN"
+    activeRole === "SUPER_ADMIN"
+      ? "Audit Trail"
+      : activeRole === "ADMIN"
       ? "Disputes"
       : activeRole === "PROVIDER"
       ? "Orders"
       : "Bookings";
 
   const walletLabel =
-    activeRole === "ADMIN"
+    activeRole === "SUPER_ADMIN"
+      ? "Treasury"
+      : activeRole === "ADMIN"
       ? "Payouts"
       : activeRole === "PROVIDER"
       ? "Earnings"

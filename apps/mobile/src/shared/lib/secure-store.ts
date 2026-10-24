@@ -121,6 +121,34 @@ export class SecureStoreManager {
   }
 
   /**
+   * Store arbitrary sensitive data (e.g. encryption keys, biometrics credentials)
+   */
+  static async storeSensitiveData(key: string, value: any): Promise<void> {
+    const stringified = typeof value === "string" ? value : JSON.stringify(value);
+    await this.setItem(`sensitive_${key}`, stringified);
+  }
+
+  /**
+   * Retrieve arbitrary sensitive data
+   */
+  static async getSensitiveData<T = string>(key: string): Promise<T | null> {
+    const raw = await this.getItem(`sensitive_${key}`);
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as T;
+    } catch {
+      return raw as unknown as T;
+    }
+  }
+
+  /**
+   * Remove arbitrary sensitive data
+   */
+  static async removeSensitiveData(key: string): Promise<void> {
+    await this.removeItem(`sensitive_${key}`);
+  }
+
+  /**
    * Clear all auth session tokens
    */
   static async clearSession(): Promise<void> {

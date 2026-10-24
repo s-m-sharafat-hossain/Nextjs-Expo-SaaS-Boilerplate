@@ -9,6 +9,8 @@ import {
 import { Role } from "@prisma/client";
 import { AppError } from "@/shared/utils/error-handler";
 import { AuditLogger } from "@/shared/security/audit-logger";
+import { prisma } from "@/shared/lib/db";
+import bcrypt from "bcryptjs";
 
 export interface SuperAdminContext {
   operatorId: string;
@@ -92,9 +94,15 @@ export class SuperAdminService {
           403
         );
       }
-      if (input.action === "SUSPEND") {
+      if (input.action === "SUSPEND" || input.action === "DEACTIVATE") {
         throw new AppError(
           "Security Rule Violation: A SUPER_ADMIN account cannot be suspended or deactivated.",
+          403
+        );
+      }
+      if (input.action === "DELETE") {
+        throw new AppError(
+          "Security Rule Violation: A SUPER_ADMIN account cannot be deleted by anyone.",
           403
         );
       }
@@ -125,6 +133,7 @@ export class SuperAdminService {
         });
         break;
       }
+      case "DEACTIVATE":
       case "SUSPEND": {
         result = await SuperAdminRepository.manageAdmin(input.targetUserId, {
           isBanned: true,
@@ -136,6 +145,23 @@ export class SuperAdminService {
         result = await SuperAdminRepository.manageAdmin(input.targetUserId, {
           isBanned: false,
           isActive: true,
+        });
+        break;
+      }
+      case "DELETE": {
+        result = await prisma.user.delete({
+          where: { id: input.targetUserId },
+          select: { id: true, email: true, name: true, role: true },
+        });
+        break;
+      }
+      case "RESET_PASSWORD": {
+        const newPwd = input.newPassword || "SuperAdminTempPass123!";
+        const passwordHash = await bcrypt.hash(newPwd, 10);
+        result = await prisma.user.update({
+          where: { id: input.targetUserId },
+          data: { passwordHash },
+          select: { id: true, email: true, name: true, role: true },
         });
         break;
       }
