@@ -1,0 +1,3 @@
+(()=>{"use strict";module.exports=[682941,a=>{var e=a.i(353140);a.s(["f",0,class{static async getUserNotifications(a){return e._.notification.findMany({where:{userId:a},orderBy:{createdAt:"desc"},take:30})}static async markAsRead(a,t){return e._.notification.updateMany({where:{id:a,userId:t},data:{isRead:!0}})}static async markAllAsRead(a){return e._.notification.updateMany({where:{userId:a,isRead:!1},data:{isRead:!0}})}static async createNotification(a){return e._.notification.create({data:a})}static async saveFeedback(a,t){return e._.feedback.create({data:{userId:a,type:t.type,message:t.message,rating:t.rating,email:t.email}})}}])},588107,a=>{var e=a.i(562810);a.s(["z",0,e])}]})();
+
+//# sourceMappingURL=_0crmp2vo62o13._.js.map

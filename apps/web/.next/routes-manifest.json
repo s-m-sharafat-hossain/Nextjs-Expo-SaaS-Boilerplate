@@ -70,12 +70,60 @@
       "namedRegex": "^/api/auth/(?<nxtPnextauth>.+?)(?:/)?$"
     },
     {
+      "page": "/api/v1/billing/invoice/[id]",
+      "regex": "^/api/v1/billing/invoice/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/v1/billing/invoice/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/api/v1/chat/[sessionId]",
       "regex": "^/api/v1/chat/([^/]+?)(?:/)?$",
       "routeKeys": {
         "nxtPsessionId": "nxtPsessionId"
       },
       "namedRegex": "^/api/v1/chat/(?<nxtPsessionId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/v1/cms/blog/[slug]",
+      "regex": "^/api/v1/cms/blog/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/v1/cms/blog/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/v1/cms/help/[slug]",
+      "regex": "^/api/v1/cms/help/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/api/v1/cms/help/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/v1/projects/[id]",
+      "regex": "^/api/v1/projects/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/v1/projects/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/v1/tasks/[id]",
+      "regex": "^/api/v1/tasks/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/v1/tasks/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/blog/[slug]",
+      "regex": "^/blog/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/blog/(?<nxtPslug>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -104,10 +152,22 @@
       "namedRegex": "^/admin(?:/)?$"
     },
     {
+      "page": "/admin/analytics",
+      "regex": "^/admin/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/analytics(?:/)?$"
+    },
+    {
       "page": "/admin/audit-logs",
       "regex": "^/admin/audit\\-logs(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/admin/audit\\-logs(?:/)?$"
+    },
+    {
+      "page": "/admin/cms",
+      "regex": "^/admin/cms(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/cms(?:/)?$"
     },
     {
       "page": "/admin/kyc",
@@ -140,6 +200,12 @@
       "namedRegex": "^/api/docs(?:/)?$"
     },
     {
+      "page": "/api/v1/admin/analytics",
+      "regex": "^/api/v1/admin/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/admin/analytics(?:/)?$"
+    },
+    {
       "page": "/api/v1/admin/audit-logs",
       "regex": "^/api/v1/admin/audit\\-logs(?:/)?$",
       "routeKeys": {},
@@ -156,6 +222,12 @@
       "regex": "^/api/v1/admin/payouts(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/admin/payouts(?:/)?$"
+    },
+    {
+      "page": "/api/v1/admin/queues",
+      "regex": "^/api/v1/admin/queues(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/admin/queues(?:/)?$"
     },
     {
       "page": "/api/v1/admin/stats",
@@ -180,6 +252,12 @@
       "regex": "^/api/v1/ai/generate(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/ai/generate(?:/)?$"
+    },
+    {
+      "page": "/api/v1/analytics",
+      "regex": "^/api/v1/analytics(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/analytics(?:/)?$"
     },
     {
       "page": "/api/v1/auth/2fa",
@@ -272,16 +350,52 @@
       "namedRegex": "^/api/v1/billing/manual\\-trx(?:/)?$"
     },
     {
+      "page": "/api/v1/billing/tax",
+      "regex": "^/api/v1/billing/tax(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/billing/tax(?:/)?$"
+    },
+    {
       "page": "/api/v1/billing/transactions",
       "regex": "^/api/v1/billing/transactions(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/billing/transactions(?:/)?$"
     },
     {
+      "page": "/api/v1/billing/usage",
+      "regex": "^/api/v1/billing/usage(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/billing/usage(?:/)?$"
+    },
+    {
+      "page": "/api/v1/branding",
+      "regex": "^/api/v1/branding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/branding(?:/)?$"
+    },
+    {
       "page": "/api/v1/chat",
       "regex": "^/api/v1/chat(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/chat(?:/)?$"
+    },
+    {
+      "page": "/api/v1/cms/blog",
+      "regex": "^/api/v1/cms/blog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/cms/blog(?:/)?$"
+    },
+    {
+      "page": "/api/v1/cms/faq",
+      "regex": "^/api/v1/cms/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/cms/faq(?:/)?$"
+    },
+    {
+      "page": "/api/v1/cms/help",
+      "regex": "^/api/v1/cms/help(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/cms/help(?:/)?$"
     },
     {
       "page": "/api/v1/compliance/ccpa/opt-out",
@@ -338,6 +452,18 @@
       "namedRegex": "^/api/v1/disputes(?:/)?$"
     },
     {
+      "page": "/api/v1/domains",
+      "regex": "^/api/v1/domains(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/domains(?:/)?$"
+    },
+    {
+      "page": "/api/v1/domains/verify",
+      "regex": "^/api/v1/domains/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/domains/verify(?:/)?$"
+    },
+    {
       "page": "/api/v1/feedback",
       "regex": "^/api/v1/feedback(?:/)?$",
       "routeKeys": {},
@@ -362,6 +488,18 @@
       "namedRegex": "^/api/v1/notifications(?:/)?$"
     },
     {
+      "page": "/api/v1/notifications/push/send",
+      "regex": "^/api/v1/notifications/push/send(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/notifications/push/send(?:/)?$"
+    },
+    {
+      "page": "/api/v1/notifications/push/subscribe",
+      "regex": "^/api/v1/notifications/push/subscribe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/notifications/push/subscribe(?:/)?$"
+    },
+    {
       "page": "/api/v1/oauth/authorize",
       "regex": "^/api/v1/oauth/authorize(?:/)?$",
       "routeKeys": {},
@@ -378,6 +516,12 @@
       "regex": "^/api/v1/oauth/token(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/oauth/token(?:/)?$"
+    },
+    {
+      "page": "/api/v1/projects",
+      "regex": "^/api/v1/projects(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/projects(?:/)?$"
     },
     {
       "page": "/api/v1/provider/bookings",
@@ -416,6 +560,12 @@
       "namedRegex": "^/api/v1/reviews(?:/)?$"
     },
     {
+      "page": "/api/v1/search",
+      "regex": "^/api/v1/search(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/search(?:/)?$"
+    },
+    {
       "page": "/api/v1/security/csp-report",
       "regex": "^/api/v1/security/csp\\-report(?:/)?$",
       "routeKeys": {},
@@ -426,6 +576,42 @@
       "regex": "^/api/v1/security/csrf(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/security/csrf(?:/)?$"
+    },
+    {
+      "page": "/api/v1/sms",
+      "regex": "^/api/v1/sms(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/sms(?:/)?$"
+    },
+    {
+      "page": "/api/v1/sse",
+      "regex": "^/api/v1/sse(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/sse(?:/)?$"
+    },
+    {
+      "page": "/api/v1/storage/upload",
+      "regex": "^/api/v1/storage/upload(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/storage/upload(?:/)?$"
+    },
+    {
+      "page": "/api/v1/tasks",
+      "regex": "^/api/v1/tasks(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/tasks(?:/)?$"
+    },
+    {
+      "page": "/api/v1/timesheets",
+      "regex": "^/api/v1/timesheets(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/timesheets(?:/)?$"
+    },
+    {
+      "page": "/api/v1/webhooks/endpoints",
+      "regex": "^/api/v1/webhooks/endpoints(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/webhooks/endpoints(?:/)?$"
     },
     {
       "page": "/api/v1/webhooks/stripe",
@@ -450,6 +636,12 @@
       "regex": "^/api/widget(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/widget(?:/)?$"
+    },
+    {
+      "page": "/blog",
+      "regex": "^/blog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog(?:/)?$"
     },
     {
       "page": "/consumer",
@@ -494,10 +686,22 @@
       "namedRegex": "^/docs(?:/)?$"
     },
     {
+      "page": "/faq",
+      "regex": "^/faq(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/faq(?:/)?$"
+    },
+    {
       "page": "/favicon.ico",
       "regex": "^/favicon\\.ico(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/help",
+      "regex": "^/help(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/help(?:/)?$"
     },
     {
       "page": "/login",
@@ -518,6 +722,18 @@
       "namedRegex": "^/provider/bookings(?:/)?$"
     },
     {
+      "page": "/provider/branding",
+      "regex": "^/provider/branding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/provider/branding(?:/)?$"
+    },
+    {
+      "page": "/provider/integrations",
+      "regex": "^/provider/integrations(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/provider/integrations(?:/)?$"
+    },
+    {
       "page": "/provider/kyc",
       "regex": "^/provider/kyc(?:/)?$",
       "routeKeys": {},
@@ -528,6 +744,12 @@
       "regex": "^/provider/payouts(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/provider/payouts(?:/)?$"
+    },
+    {
+      "page": "/provider/projects",
+      "regex": "^/provider/projects(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/provider/projects(?:/)?$"
     },
     {
       "page": "/provider/schedule",

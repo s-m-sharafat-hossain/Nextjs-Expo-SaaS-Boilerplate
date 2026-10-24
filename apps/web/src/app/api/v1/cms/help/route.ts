@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const parsed = createHelpSchema.safeParse(body);
     if (!parsed.success) {
-      return ApiResponse.error(parsed.error.errors[0]?.message || "Invalid payload", 400);
+      return ApiResponse.error(parsed.error.issues[0]?.message || "Invalid payload", 400);
     }
 
     const article = await HelpRepository.create(parsed.data);

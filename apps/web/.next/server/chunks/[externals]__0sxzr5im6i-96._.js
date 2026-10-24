@@ -1,0 +1,3 @@
+module.exports=[449719,(e,r,s)=>{r.exports=e.x("assert",()=>require("assert"))},500874,(e,r,s)=>{r.exports=e.x("buffer",()=>require("buffer"))},427699,(e,r,s)=>{r.exports=e.x("events",()=>require("events"))},522734,(e,r,s)=>{r.exports=e.x("fs",()=>require("fs"))},504446,(e,r,s)=>{r.exports=e.x("net",()=>require("net"))},677652,(e,r,s)=>{r.exports=e.x("node:diagnostics_channel",()=>require("node:diagnostics_channel"))},446786,(e,r,s)=>{r.exports=e.x("os",()=>require("os"))},755004,(e,r,s)=>{r.exports=e.x("tls",()=>require("tls"))},224361,(e,r,s)=>{r.exports=e.x("util",()=>require("util"))}];
+
+//# sourceMappingURL=%5Bexternals%5D__0sxzr5im6i-96._.js.map

@@ -9,7 +9,13 @@
     "[project]/apps/web/src/app/(auth)/signup/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
+    "[project]/apps/web/src/app/(dashboard)/admin/analytics/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
     "[project]/apps/web/src/app/(dashboard)/admin/audit-logs/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/apps/web/src/app/(dashboard)/admin/cms/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
     "[project]/apps/web/src/app/(dashboard)/admin/kyc/page": [
@@ -48,6 +54,12 @@
     "[project]/apps/web/src/app/(dashboard)/provider/bookings/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
+    "[project]/apps/web/src/app/(dashboard)/provider/branding/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/apps/web/src/app/(dashboard)/provider/integrations/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
     "[project]/apps/web/src/app/(dashboard)/provider/kyc/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
@@ -57,10 +69,25 @@
     "[project]/apps/web/src/app/(dashboard)/provider/payouts/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
+    "[project]/apps/web/src/app/(dashboard)/provider/projects/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
     "[project]/apps/web/src/app/(dashboard)/provider/schedule/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
     "[project]/apps/web/src/app/(dashboard)/provider/services/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/apps/web/src/app/(public)/blog/[slug]/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/apps/web/src/app/(public)/blog/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/apps/web/src/app/(public)/faq/page": [
+      "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
+    ],
+    "[project]/apps/web/src/app/(public)/help/page": [
       "static/media/83afe278b6a6bb3c-s.p.2bn3s6zvc0dyp.woff2"
     ],
     "[project]/apps/web/src/app/_not-found/page": [

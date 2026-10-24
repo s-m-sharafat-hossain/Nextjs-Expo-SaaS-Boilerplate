@@ -9,7 +9,7 @@ import { CsrfProtection } from "@/shared/security/csrf";
 // ─── Route Classification ───────────────────────────────────────────────────
 
 /** Routes accessible without any session */
-const PUBLIC_ROUTES = ["/", "/login", "/register", "/forgot-password"];
+const PUBLIC_ROUTES = ["/", "/login", "/register", "/forgot-password", "/blog", "/faq", "/help"];
 
 /** Routes requiring authentication but not a specific role */
 const PROTECTED_ROUTES = ["/dashboard", "/profile", "/settings"];

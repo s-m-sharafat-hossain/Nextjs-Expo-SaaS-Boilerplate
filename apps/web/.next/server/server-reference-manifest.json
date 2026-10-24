@@ -3,16 +3,46 @@
     "706f883ce531c70364b0eac35ba8a6f4bca819734c": {
       "workers": {
         "app/(dashboard)/consumer/chat/page": {
-          "moduleId": 37972,
+          "moduleId": 937972,
           "async": false
         },
         "app/page": {
-          "moduleId": 59892,
+          "moduleId": 959892,
           "async": false
         }
       },
       "filename": "apps/web/src/features/chat-n8n/chat.action.ts",
       "exportedName": "sendMessageAction"
+    },
+    "60539c4cc20946228b5dccfe0f5fd58c4c81796fca": {
+      "workers": {
+        "app/(dashboard)/provider/projects/page": {
+          "moduleId": 30745,
+          "async": false
+        }
+      },
+      "filename": "apps/web/src/features/projects/projects.action.ts",
+      "exportedName": "moveTaskAction"
+    },
+    "4024892d2bc3d51807ad887760d638caa8299e9b84": {
+      "workers": {
+        "app/(dashboard)/provider/projects/page": {
+          "moduleId": 30745,
+          "async": false
+        }
+      },
+      "filename": "apps/web/src/features/projects/projects.action.ts",
+      "exportedName": "createTaskAction"
+    },
+    "403a6348310f9159b15e4a8d2cc91c17991e246715": {
+      "workers": {
+        "app/(dashboard)/provider/projects/page": {
+          "moduleId": 30745,
+          "async": false
+        }
+      },
+      "filename": "apps/web/src/features/projects/projects.action.ts",
+      "exportedName": "logTimesheetAction"
     }
   },
   "edge": {},

@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../../../apps/web/.next-internal/server/app/%28dashboard%29/consumer/chat/page/actions.js%20%28server%20actions%20loader%29"],"sourcesContent":["export {sendMessageAction as '706f883ce531c70364b0eac35ba8a6f4bca819734c'} from 'ACTIONS_MODULE0'\n"],"names":[],"mappings":"6ZAAA,IAAA,EAAA,EAAA,CAAA,CAAA"}

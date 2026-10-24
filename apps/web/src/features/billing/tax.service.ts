@@ -82,7 +82,7 @@ export class TaxService {
           taxRatePercent: Math.round(taxRate * 100) / 100,
           taxAmount: Math.round(taxAmount * 100) / 100,
           totalWithTax: Math.round((amount + taxAmount) * 100) / 100,
-          jurisdiction: calculation.jurisdiction || countryCode,
+          jurisdiction: (calculation as any).jurisdiction || countryCode,
           provider: "STRIPE_TAX",
         };
       } catch (err: any) {

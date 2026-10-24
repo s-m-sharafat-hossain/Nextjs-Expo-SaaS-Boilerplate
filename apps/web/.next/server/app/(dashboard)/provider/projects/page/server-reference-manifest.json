@@ -1,0 +1,35 @@
+{
+  "node": {
+    "60539c4cc20946228b5dccfe0f5fd58c4c81796fca": {
+      "workers": {
+        "app/(dashboard)/provider/projects/page": {
+          "moduleId": 30745,
+          "async": false
+        }
+      },
+      "exportedName": "moveTaskAction",
+      "filename": "apps/web/src/features/projects/projects.action.ts"
+    },
+    "4024892d2bc3d51807ad887760d638caa8299e9b84": {
+      "workers": {
+        "app/(dashboard)/provider/projects/page": {
+          "moduleId": 30745,
+          "async": false
+        }
+      },
+      "exportedName": "createTaskAction",
+      "filename": "apps/web/src/features/projects/projects.action.ts"
+    },
+    "403a6348310f9159b15e4a8d2cc91c17991e246715": {
+      "workers": {
+        "app/(dashboard)/provider/projects/page": {
+          "moduleId": 30745,
+          "async": false
+        }
+      },
+      "exportedName": "logTimesheetAction",
+      "filename": "apps/web/src/features/projects/projects.action.ts"
+    }
+  },
+  "edge": {}
+}

@@ -3,7 +3,7 @@
     "706f883ce531c70364b0eac35ba8a6f4bca819734c": {
       "workers": {
         "app/(dashboard)/consumer/chat/page": {
-          "moduleId": 37972,
+          "moduleId": 937972,
           "async": false
         }
       },

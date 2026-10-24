@@ -1,0 +1,3 @@
+module.exports=[311885,e=>{"use strict";var r=e.i(157882),t=e.i(353140);e.s(["f",0,class{static async authenticate(e){let i=e.headers.get("x-user-id")||new URL(e.url).searchParams.get("userId");if(!i)throw new r.A("Unauthorized: Missing user authentication credentials",401);let s=await t.r.user.findUnique({where:{id:i},select:{id:!0,email:!0,name:!0,role:!0}});if(!s)throw new r.A("Unauthorized: User not found",401);return s}static requireRole(e,t){if(!t.includes(e.role))throw new r.A(`Forbidden: Role '${e.role}' does not have permission to access this resource`,403)}}])}];
+
+//# sourceMappingURL=apps_web_src_shared_middlewares_auth_middleware_ts_1e5j3hzw1vxl3._.js.map

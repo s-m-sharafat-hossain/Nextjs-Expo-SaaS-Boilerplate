@@ -121,7 +121,7 @@ export class SubscriptionProrationService {
       await prisma.subscription.update({
         where: { id: user.subscription.id },
         data: {
-          plan: targetPlan,
+          planType: targetPlan,
           status: SubscriptionStatus.ACTIVE,
         },
       });

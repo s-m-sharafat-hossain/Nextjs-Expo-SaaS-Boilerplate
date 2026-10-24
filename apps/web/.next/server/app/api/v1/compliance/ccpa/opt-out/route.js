@@ -1,9 +1,11 @@
 var R=require("../../../../../../chunks/[turbopack]_runtime.js")("server/app/api/v1/compliance/ccpa/opt-out/route.js")
-R.c("server/chunks/[root-of-the-server]__08kspgxzlia7u._.js")
-R.c("server/chunks/apps_web_src_shared_security_audit-logger_ts_0vq-f2hm5j92t._.js")
-R.c("server/chunks/[root-of-the-server]__1r7kbfkiw2xmu._.js")
-R.c("server/chunks/apps_web_src_shared_utils_error-handler_ts_0e1pu-_ertk3j._.js")
+R.c("server/chunks/apps_web_src_shared_middlewares_auth_middleware_ts_1e5j3hzw1vxl3._.js")
 R.c("server/chunks/_0voyxnosgzerk._.js")
+R.c("server/chunks/apps_web_src_shared_security_audit-logger_ts_0vq-f2hm5j92t._.js")
+R.c("server/chunks/node_modules_next_0sx6ib_cz483a._.js")
+R.c("server/chunks/[root-of-the-server]__1vadfd0kqh2g8._.js")
+R.c("server/chunks/node_modules_zod_v4_classic_errors_0tp0y-q7s2wq5.js")
+R.c("server/chunks/[root-of-the-server]__0ojiysl5p9515._.js")
 R.c("server/chunks/1no0_server_app_api_v1_compliance_ccpa_opt-out_route_actions_05q3gutcr6fbn.js")
-R.m(37578)
-module.exports=R.m(37578).exports
+R.m(937578)
+module.exports=R.m(937578).exports

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const parsed = taxSchema.safeParse(body);
     if (!parsed.success) {
-      return ApiResponse.error(parsed.error.errors[0]?.message || "Invalid payload", 400);
+      return ApiResponse.error(parsed.error.issues[0]?.message || "Invalid payload", 400);
     }
 
     const result = await TaxService.calculateTax(parsed.data);

@@ -8,7 +8,7 @@ import { z } from "zod";
 const recordUsageSchema = z.object({
   metric: z.enum(["api_calls", "ai_tokens", "storage_mb", "sms_sent", "compute_seconds"]),
   quantity: z.number().positive(),
-  metadata: z.record(z.any()).optional(),
+  metadata: z.record(z.string(), z.any()).optional(),
 });
 
 /**
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const parsed = recordUsageSchema.safeParse(body);
     if (!parsed.success) {
-      return ApiResponse.error(parsed.error.errors[0]?.message || "Invalid payload", 400);
+      return ApiResponse.error(parsed.error.issues[0]?.message || "Invalid payload", 400);
     }
 
     const result = await UsageBillingService.recordUsage({

@@ -1,0 +1,3 @@
+module.exports=[485685,e=>{e.v(e=>Promise.resolve().then(()=>e(254799)))},311885,e=>{"use strict";var r=e.i(157882),s=e.i(353140);e.s(["f",0,class{static async authenticate(e){let t=e.headers.get("x-user-id")||new URL(e.url).searchParams.get("userId");if(!t)throw new r.A("Unauthorized: Missing user authentication credentials",401);let i=await s.r.user.findUnique({where:{id:t},select:{id:!0,email:!0,name:!0,role:!0}});if(!i)throw new r.A("Unauthorized: User not found",401);return i}static requireRole(e,s){if(!s.includes(e.role))throw new r.A(`Forbidden: Role '${e.role}' does not have permission to access this resource`,403)}}])}];
+
+//# sourceMappingURL=%5Broot-of-the-server%5D__0vk92uj5_bpa2._.js.map
