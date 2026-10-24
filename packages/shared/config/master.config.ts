@@ -74,6 +74,45 @@ export const masterConfig = {
     },
   },
 
+  // ENTERPRISE SSO & AUTHENTICATION CONFIGURATION
+  sso: {
+    enabled: true,
+    providers: {
+      saml: {
+        enabled: true,
+        entryPoint: (typeof process !== "undefined" && process.env?.SAML_ENTRY_POINT) || "https://auth.company.com/simplesaml/saml2/idp/SSOService.php",
+        issuer: (typeof process !== "undefined" && process.env?.SAML_ISSUER) || "https://masterflow-saas.com",
+        cert: (typeof process !== "undefined" && process.env?.SAML_CERT) || "",
+      },
+      okta: {
+        enabled: true,
+        domain: (typeof process !== "undefined" && process.env?.OKTA_DOMAIN) || "dev-example.okta.com",
+        clientId: (typeof process !== "undefined" && process.env?.OKTA_CLIENT_ID) || "",
+        clientSecret: (typeof process !== "undefined" && process.env?.OKTA_CLIENT_SECRET) || "",
+      },
+      ldap: {
+        enabled: false,
+        url: (typeof process !== "undefined" && process.env?.LDAP_URL) || "ldaps://ldap.company.com:636",
+        bindDN: (typeof process !== "undefined" && process.env?.LDAP_BIND_DN) || "cn=admin,dc=example,dc=com",
+        searchBase: (typeof process !== "undefined" && process.env?.LDAP_SEARCH_BASE) || "dc=example,dc=com",
+      },
+    },
+    sessionTimeoutHours: 24,
+    maxConcurrentSessions: 5,
+    lockoutPolicy: {
+      maxFailedAttempts: 5,
+      lockoutDurationMinutes: 30,
+    },
+    passwordPolicy: {
+      minLength: 12,
+      requireUppercase: true,
+      requireLowercase: true,
+      requireNumber: true,
+      requireSpecialChar: true,
+      historyCount: 5,
+    },
+  },
+
   // 3. DESIGN TOKENS (Colors, Typography, Radii, Shadows)
   design: {
     // Theme modes

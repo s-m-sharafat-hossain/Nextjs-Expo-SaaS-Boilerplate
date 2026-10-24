@@ -4,6 +4,7 @@ import { SendMessageInput } from "./chat.schema";
 import { siteConfig } from "@shared/config";
 import { prisma } from "@/shared/lib/db";
 import { AppError } from "@/shared/utils/error-handler";
+import { WebhookSecurity } from "@/shared/security/webhook";
 
 export class ChatService {
   /**
@@ -58,34 +59,32 @@ export class ChatService {
     // 3. Persist User Message
     await ChatRepository.saveMessage(sessionId, "user", input.message);
 
-    // 4. Dispatch to n8n Webhook or Intelligent Clinical Fallback
+    // 4. Dispatch to n8n Webhook with HMAC signature and exponential retry
     let assistantReply = "";
     const n8nConfig = siteConfig.n8n;
 
     if (n8nConfig.enabled && n8nConfig.webhookUrl && !n8nConfig.webhookUrl.includes("yourdomain")) {
-      try {
-        const response = await fetch(n8nConfig.webhookUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-n8n-secret": n8nConfig.secretToken,
-          },
-          body: JSON.stringify({
-            sessionId,
-            message: input.message,
-            userId: userId ?? "anonymous-visitor",
-            userRole: userRole ?? "CONSUMER",
-            timestamp: new Date().toISOString(),
-          }),
-        });
+      const payload = {
+        sessionId,
+        message: input.message,
+        userId: userId ?? "anonymous-visitor",
+        userRole: userRole ?? "CONSUMER",
+        timestamp: new Date().toISOString(),
+      };
 
-        if (response.ok) {
-          const data = await response.json();
-          assistantReply =
-            data.output || data.text || data.message || "Thank you. Your request has been processed.";
-        }
-      } catch (err) {
-        console.warn("⚠️ n8n webhook proxy unavailable, activating portfolio fallback AI:", err);
+      const result = await WebhookSecurity.dispatchWithRetry(
+        n8nConfig.webhookUrl,
+        payload,
+        n8nConfig.secretToken || "default-n8n-token",
+        3
+      );
+
+      if (result.success && result.response) {
+        assistantReply =
+          result.response.output ||
+          result.response.text ||
+          result.response.message ||
+          "Thank you. Your request has been processed.";
       }
     }
 

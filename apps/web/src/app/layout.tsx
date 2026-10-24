@@ -9,6 +9,8 @@ import { ChatWidget } from "@/shared/components/ChatWidget";
 import { ServiceWorkerRegister } from "@/shared/components/ServiceWorkerRegister";
 import { ThemeProvider } from "@/shared/design/theme-provider";
 
+import { headers } from "next/headers";
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -31,13 +33,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const nonce = headersList.get("x-nonce") || undefined;
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {nonce && <meta name="csp-nonce" content={nonce} />}
+      </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider defaultTheme="light" storageKey="master-boilerplate-theme">
           {children}

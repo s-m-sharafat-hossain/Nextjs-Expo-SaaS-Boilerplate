@@ -7,16 +7,16 @@
   "lowPriorityFiles": [],
   "rootMainFiles": [
     "static/chunks/1x6obpmlu1_c2.js",
-    "static/chunks/2r4s4h5xul1n-.js",
-    "static/chunks/2khxl0v1q4i6n.js",
-    "static/chunks/35znm6glf7gow.js",
+    "static/chunks/0l_yy3s2e9uw2.js",
+    "static/chunks/0alk1gtqsnf39.js",
+    "static/chunks/02u-9cxh822sn.js",
     "static/chunks/turbopack-3-ry682tkyiqk.js"
   ],
   "pages": {},
   "ampFirstPages": [],
   "rootMainFilesTree": {},
   "pagesChunkGroupBootstrapParams": {
-    "/(dashboard)/provider/bookings/page": {"otherChunks":["static/chunks/1x6obpmlu1_c2.js","static/chunks/2r4s4h5xul1n-.js","static/chunks/2khxl0v1q4i6n.js","static/chunks/35znm6glf7gow.js"],"runtimeModuleIds":[94553]}
+    "/(dashboard)/provider/bookings/page": {"otherChunks":["static/chunks/1x6obpmlu1_c2.js","static/chunks/0l_yy3s2e9uw2.js","static/chunks/0alk1gtqsnf39.js","static/chunks/02u-9cxh822sn.js"],"runtimeModuleIds":[94553]}
   },
   "chunkLoadingGlobal": "TURBOPACK"
 }

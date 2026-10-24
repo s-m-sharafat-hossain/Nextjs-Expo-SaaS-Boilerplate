@@ -16,7 +16,12 @@
     "db:studio": "npm --workspace=apps/web run db:studio",
     "db:seed": "npm --workspace=apps/web run db:seed",
     "make:feature": "npm --workspace=apps/web run make:feature",
-    "test": "npm --workspace=apps/web run test"
+    "test": "npm --workspace=apps/web run test",
+    "audit:fix": "npm --workspace=apps/web run audit:fix",
+    "audit:check": "npm --workspace=apps/web run audit:check",
+    "audit:resolve": "npm --workspace=apps/web run audit:resolve",
+    "secrets:rotate": "npm --workspace=apps/web run secrets:rotate",
+    "sbom:generate": "npm --workspace=apps/web run sbom:generate"
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.2",

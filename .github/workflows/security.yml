@@ -1,0 +1,49 @@
+# .github/workflows/security.yml
+name: Security Audit & Supply Chain Compliance
+
+on:
+  push:
+    branches: ["main", "master", "develop"]
+  pull_request:
+    branches: ["main", "master"]
+  schedule:
+    # Daily security scan at 02:00 AM UTC
+    - cron: "0 2 * * *"
+
+jobs:
+  security-audit:
+    name: Dependency Audit & Snyk Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js Runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install Monorepo Dependencies
+        run: npm ci
+
+      - name: Run NPM Security Vulnerability Audit
+        run: npm run audit:check --workspaces
+        continue-on-error: true
+
+      - name: Run Snyk Security Vulnerability Test
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high --all-projects
+        continue-on-error: true
+
+      - name: Generate Software Bill of Materials (SBOM)
+        run: npm run sbom:generate
+
+      - name: Upload SBOM Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: software-bill-of-materials
+          path: apps/web/sbom.json

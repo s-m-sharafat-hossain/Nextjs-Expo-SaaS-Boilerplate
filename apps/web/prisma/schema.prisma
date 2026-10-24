@@ -119,6 +119,19 @@ model User {
   twoFactorSecret   String?              // TOTP secret
   twoFactorEnabled  Boolean              @default(false)
 
+  // Advanced Security & Account Lockout
+  failedLoginAttempts Int                @default(0)
+  lockoutUntil        DateTime?
+  passwordHistory     String[]           @default([])
+  securityQuestions   Json?
+  biometricCredential Json?
+  phoneVerified       Boolean            @default(false)
+
+  // Encrypted Sensitive PII
+  governmentId      String?              // Encrypted at rest
+  address           String?              // Encrypted at rest
+  ccpaOptedOut      Boolean              @default(false)
+
   // Stripe Billing Customer
   stripeCustomerId  String?              @unique
 
@@ -129,6 +142,9 @@ model User {
   wallet            Wallet?
   kycDocuments      KycDocument[]
   workspaceMembers  WorkspaceMember[]
+  oauthClients      OAuthClient[]
+  oauthTokens       OAuthToken[]
+  complianceRequests ComplianceRequest[]
 
   // Provider side
   providedServices  ListingService[]     @relation("ProviderServices")
@@ -152,6 +168,10 @@ model User {
   chatSessions      ChatSession[]
   auditLogs         AuditLog[]
   feedbacks         Feedback[]
+  blogPosts         BlogPost[]
+  assignedTasks     Task[]               @relation("AssignedTasks")
+  taskComments      TaskComment[]
+  timesheetEntries  TimesheetEntry[]
   apiKeys           ApiKey[]
 
   createdAt         DateTime             @default(now())
@@ -206,10 +226,14 @@ model Workspace {
   id          String            @id @default(cuid())
   name        String
   slug        String            @unique
-  logoUrl     String?
-  members     WorkspaceMember[]
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
+  logoUrl          String?
+  customBranding   Json?
+  members          WorkspaceMember[]
+  projects         Project[]
+  webhookEndpoints WebhookEndpoint[]
+  customDomain     CustomDomain?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
   @@map("workspaces")
 }
@@ -263,6 +287,8 @@ model Wallet {
   totalEarned    Float    @default(0.0)
   totalWithdrawn Float    @default(0.0)
   currency       String   @default("USD")
+  cardNumber     String?  // Encrypted at rest
+  bankAccount    String?  // Encrypted at rest
   user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   updatedAt      DateTime @updatedAt
 
@@ -620,3 +646,235 @@ model AuditLog {
   @@index([action])
   @@map("audit_logs")
 }
+
+// ─────────────────────────────────────────────
+// 11. OAUTH 2.0 & COMPLIANCE (GDPR / CCPA)
+// ─────────────────────────────────────────────
+
+model OAuthClient {
+  id           String       @id @default(cuid())
+  clientId     String       @unique
+  clientSecret String
+  name         String
+  redirectUris String[]     @default([])
+  scopes       String[]     @default(["read"])
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokens       OAuthToken[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  @@index([userId])
+  @@map("oauth_clients")
+}
+
+model OAuthToken {
+  id                   String       @id @default(cuid())
+  accessToken          String       @unique
+  refreshToken         String?      @unique
+  accessTokenExpiresAt DateTime
+  refreshTokenExpiresAt DateTime?
+  clientId             String
+  userId               String
+  scopes               String[]     @default(["read"])
+  revoked              Boolean      @default(false)
+  client               OAuthClient  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  user                 User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt            DateTime     @default(now())
+
+  @@index([clientId])
+  @@index([userId])
+  @@map("oauth_tokens")
+}
+
+model ComplianceRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        String   // "EXPORT_DATA" | "RIGHT_TO_FORGOTTEN" | "CCPA_OPT_OUT"
+  status      String   @default("PENDING") // "PENDING" | "PROCESSING" | "COMPLETED" | "REJECTED"
+  details     Json?
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([type])
+  @@map("compliance_requests")
+}
+
+// ─────────────────────────────────────────────
+// 15. CMS: BLOG, FAQ & HELP CENTER
+// ─────────────────────────────────────────────
+
+model BlogPost {
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  summary         String
+  content         String    @db.Text
+  authorId        String
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  publishedAt     DateTime?
+  updatedAt       DateTime  @updatedAt
+  createdAt       DateTime  @default(now())
+  tags            String[]  @default([])
+  coverImage      String?
+  category        String?
+  readTimeMinutes Int?
+  viewCount       Int       @default(0)
+  isPublished     Boolean   @default(false)
+
+  @@index([slug])
+  @@index([authorId])
+  @@index([publishedAt])
+  @@map("blog_posts")
+}
+
+model FaqItem {
+  id          String   @id @default(cuid())
+  question    String
+  answer      String   @db.Text
+  category    String   @default("General")
+  order       Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([category])
+  @@map("faq_items")
+}
+
+model HelpArticle {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  category    String   @default("Getting Started")
+  content     String   @db.Text
+  helpfulYes  Int      @default(0)
+  helpfulNo   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@map("help_articles")
+}
+
+// ─────────────────────────────────────────────
+// 16. COLLABORATION: PROJECTS & TASKS
+// ─────────────────────────────────────────────
+
+model Project {
+  id          String           @id @default(cuid())
+  workspaceId String?
+  workspace   Workspace?       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  name        String
+  description String?          @db.Text
+  status      String           @default("ACTIVE") // ACTIVE, COMPLETED, ARCHIVED
+  startDate   DateTime?
+  dueDate     DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  tasks       Task[]
+  timesheets  TimesheetEntry[]
+
+  @@index([workspaceId])
+  @@map("projects")
+}
+
+model Task {
+  id          String           @id @default(cuid())
+  projectId   String
+  project     Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String?          @db.Text
+  status      String           @default("TODO") // TODO, IN_PROGRESS, IN_REVIEW, DONE
+  priority    String           @default("MEDIUM") // LOW, MEDIUM, HIGH, URGENT
+  order       Int              @default(0)
+  assigneeId  String?
+  assignee    User?            @relation("AssignedTasks", fields: [assigneeId], references: [id])
+  dueDate     DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  comments    TaskComment[]
+  timesheets  TimesheetEntry[]
+
+  @@index([projectId])
+  @@index([assigneeId])
+  @@map("tasks")
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([taskId])
+  @@index([userId])
+  @@map("task_comments")
+}
+
+model TimesheetEntry {
+  id          String    @id @default(cuid())
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  taskId      String?
+  task        Task?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  description String?
+  hours       Float
+  date        DateTime  @default(now())
+  createdAt   DateTime  @default(now())
+
+  @@index([projectId])
+  @@index([userId])
+  @@map("timesheet_entries")
+}
+
+// ─────────────────────────────────────────────
+// 17. INTEGRATIONS: WEBHOOKS & AUTOMATION
+// ─────────────────────────────────────────────
+
+model WebhookEndpoint {
+  id          String     @id @default(cuid())
+  workspaceId String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  url         String
+  events      String[]   @default([])
+  secret      String
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([workspaceId])
+  @@map("webhook_endpoints")
+}
+
+// ─────────────────────────────────────────────
+// 18. WHITE-LABELING: CUSTOM DOMAINS
+// ─────────────────────────────────────────────
+
+model CustomDomain {
+  id          String    @id @default(cuid())
+  workspaceId String    @unique
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  domain      String    @unique
+  status      String    @default("PENDING") // PENDING, ACTIVE, FAILED
+  sslStatus   String    @default("PENDING")
+  dnsRecord   String?
+  verifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([domain])
+  @@map("custom_domains")
+}
+
+

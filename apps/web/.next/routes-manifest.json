@@ -23,24 +23,32 @@
           "value": "on"
         },
         {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        },
-        {
           "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
+          "value": "DENY"
         },
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
         },
         {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
           "key": "Referrer-Policy",
-          "value": "origin-when-cross-origin"
+          "value": "strict-origin-when-cross-origin"
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=(), browsing-topics=()"
+          "value": "geolocation=(), microphone=(), camera=()"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://images.unsplash.com https://lh3.googleusercontent.com https://avatars.githubusercontent.com https://*.supabase.co https://utfs.io; connect-src 'self' https://neon.tech https://*.neon.tech https://api.resend.com https://resend.com https://api.stripe.com https://stripe.com https://api.openai.com https://openai.com; frame-ancestors 'none'; block-all-mixed-content; upgrade-insecure-requests; report-uri /api/v1/security/csp-report"
         }
       ],
       "regex": "^(?:/(.*))(?:/)?$"
@@ -96,6 +104,12 @@
       "namedRegex": "^/admin(?:/)?$"
     },
     {
+      "page": "/admin/audit-logs",
+      "regex": "^/admin/audit\\-logs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin/audit\\-logs(?:/)?$"
+    },
+    {
       "page": "/admin/kyc",
       "regex": "^/admin/kyc(?:/)?$",
       "routeKeys": {},
@@ -124,6 +138,12 @@
       "regex": "^/api/docs(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/docs(?:/)?$"
+    },
+    {
+      "page": "/api/v1/admin/audit-logs",
+      "regex": "^/api/v1/admin/audit\\-logs(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/admin/audit\\-logs(?:/)?$"
     },
     {
       "page": "/api/v1/admin/kyc",
@@ -168,6 +188,18 @@
       "namedRegex": "^/api/v1/auth/2fa(?:/)?$"
     },
     {
+      "page": "/api/v1/auth/biometric/enroll",
+      "regex": "^/api/v1/auth/biometric/enroll(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/biometric/enroll(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/biometric/verify",
+      "regex": "^/api/v1/auth/biometric/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/biometric/verify(?:/)?$"
+    },
+    {
       "page": "/api/v1/auth/demo",
       "regex": "^/api/v1/auth/demo(?:/)?$",
       "routeKeys": {},
@@ -180,10 +212,52 @@
       "namedRegex": "^/api/v1/auth/login(?:/)?$"
     },
     {
+      "page": "/api/v1/auth/magic-link/request",
+      "regex": "^/api/v1/auth/magic\\-link/request(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/magic\\-link/request(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/magic-link/verify",
+      "regex": "^/api/v1/auth/magic\\-link/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/magic\\-link/verify(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/phone/send-code",
+      "regex": "^/api/v1/auth/phone/send\\-code(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/phone/send\\-code(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/phone/verify",
+      "regex": "^/api/v1/auth/phone/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/phone/verify(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/recovery-questions",
+      "regex": "^/api/v1/auth/recovery\\-questions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/recovery\\-questions(?:/)?$"
+    },
+    {
       "page": "/api/v1/auth/register",
       "regex": "^/api/v1/auth/register(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/auth/register(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/tokens/revoke",
+      "regex": "^/api/v1/auth/tokens/revoke(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/tokens/revoke(?:/)?$"
+    },
+    {
+      "page": "/api/v1/auth/tokens/revoke-all",
+      "regex": "^/api/v1/auth/tokens/revoke\\-all(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/auth/tokens/revoke\\-all(?:/)?$"
     },
     {
       "page": "/api/v1/billing/checkout",
@@ -208,6 +282,24 @@
       "regex": "^/api/v1/chat(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/chat(?:/)?$"
+    },
+    {
+      "page": "/api/v1/compliance/ccpa/opt-out",
+      "regex": "^/api/v1/compliance/ccpa/opt\\-out(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/compliance/ccpa/opt\\-out(?:/)?$"
+    },
+    {
+      "page": "/api/v1/compliance/gdpr/delete",
+      "regex": "^/api/v1/compliance/gdpr/delete(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/compliance/gdpr/delete(?:/)?$"
+    },
+    {
+      "page": "/api/v1/compliance/gdpr/export",
+      "regex": "^/api/v1/compliance/gdpr/export(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/compliance/gdpr/export(?:/)?$"
     },
     {
       "page": "/api/v1/consumer/bookings",
@@ -270,6 +362,24 @@
       "namedRegex": "^/api/v1/notifications(?:/)?$"
     },
     {
+      "page": "/api/v1/oauth/authorize",
+      "regex": "^/api/v1/oauth/authorize(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/oauth/authorize(?:/)?$"
+    },
+    {
+      "page": "/api/v1/oauth/revoke",
+      "regex": "^/api/v1/oauth/revoke(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/oauth/revoke(?:/)?$"
+    },
+    {
+      "page": "/api/v1/oauth/token",
+      "regex": "^/api/v1/oauth/token(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/oauth/token(?:/)?$"
+    },
+    {
       "page": "/api/v1/provider/bookings",
       "regex": "^/api/v1/provider/bookings(?:/)?$",
       "routeKeys": {},
@@ -306,6 +416,18 @@
       "namedRegex": "^/api/v1/reviews(?:/)?$"
     },
     {
+      "page": "/api/v1/security/csp-report",
+      "regex": "^/api/v1/security/csp\\-report(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/security/csp\\-report(?:/)?$"
+    },
+    {
+      "page": "/api/v1/security/csrf",
+      "regex": "^/api/v1/security/csrf(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/security/csrf(?:/)?$"
+    },
+    {
       "page": "/api/v1/webhooks/stripe",
       "regex": "^/api/v1/webhooks/stripe(?:/)?$",
       "routeKeys": {},
@@ -316,6 +438,12 @@
       "regex": "^/api/v1/workspaces(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/api/v1/workspaces(?:/)?$"
+    },
+    {
+      "page": "/api/v2/health",
+      "regex": "^/api/v2/health(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v2/health(?:/)?$"
     },
     {
       "page": "/api/widget",

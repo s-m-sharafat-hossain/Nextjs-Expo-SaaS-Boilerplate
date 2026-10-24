@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "首页",
+    "dashboard": "控制台",
+    "pricing": "价格",
+    "login": "登录",
+    "register": "立即开始",
+    "logout": "退出登录",
+    "docs": "API文档",
+    "admin": "管理门户"
+  },
+  "common": {
+    "credits": "积分",
+    "plan": "当前方案",
+    "upgrade": "升级方案",
+    "save": "保存更改",
+    "cancel": "取消",
+    "loading": "加载中...",
+    "success": "操作成功",
+    "error": "出现错误",
+    "search": "搜索...",
+    "notifications": "通知",
+    "presence": "当前在线"
+  },
+  "dashboard": {
+    "welcome": "欢迎回来",
+    "activePlan": "当前套餐",
+    "availableCredits": "可用AI积分",
+    "recentActivity": "最新活动",
+    "quickActions": "快捷操作",
+    "liveSync": "实时同步已开启"
+  },
+  "chat": {
+    "title": "AI 医疗与预约助手",
+    "placeholder": "请输入您的医疗问题或预约要求...",
+    "send": "发送消息",
+    "clear": "清空对话",
+    "typing": "正在输入..."
+  }
+}

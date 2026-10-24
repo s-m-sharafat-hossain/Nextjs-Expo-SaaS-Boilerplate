@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "dashboard": "Dashboard",
+    "pricing": "Preise",
+    "login": "Anmelden",
+    "register": "Registrieren",
+    "logout": "Abmelden",
+    "docs": "API-Dokumentation",
+    "admin": "Admin-Portal"
+  },
+  "common": {
+    "credits": "Guthaben",
+    "plan": "Aktueller Plan",
+    "upgrade": "Plan aktualisieren",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "loading": "Wird geladen...",
+    "success": "Erfolgreich ausgeführt",
+    "error": "Ein Fehler ist aufgetreten",
+    "search": "Suchen...",
+    "notifications": "Benachrichtigungen",
+    "presence": "Jetzt aktiv"
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück",
+    "activePlan": "Aktiver Plan",
+    "availableCredits": "Verfügbare KI-Credits",
+    "recentActivity": "Letzte Aktivitäten",
+    "quickActions": "Schnellaktionen",
+    "liveSync": "Live-Synchronisierung aktiv"
+  },
+  "chat": {
+    "title": "KI-Klinikassistent",
+    "placeholder": "Geben Sie Ihre Frage oder Terminanfrage ein...",
+    "send": "Senden",
+    "clear": "Chat löschen",
+    "typing": "tippt..."
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de Bord",
+    "pricing": "Tarification",
+    "login": "Connexion",
+    "register": "Commencer",
+    "logout": "Déconnexion",
+    "docs": "Docs API",
+    "admin": "Portail Admin"
+  },
+  "common": {
+    "credits": "Crédits",
+    "plan": "Forfait Actuel",
+    "upgrade": "Changer de Forfait",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "loading": "Chargement...",
+    "success": "Opération réussie",
+    "error": "Une erreur est survenue",
+    "search": "Rechercher...",
+    "notifications": "Notifications",
+    "presence": "En ligne"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "activePlan": "Forfait Actif",
+    "availableCredits": "Crédits IA Disponibles",
+    "recentActivity": "Activité Récente",
+    "quickActions": "Actions Rapides",
+    "liveSync": "Synchronisation en direct"
+  },
+  "chat": {
+    "title": "Assistant IA Médical",
+    "placeholder": "Écrivez votre message ou demande de rendez-vous...",
+    "send": "Envoyer",
+    "clear": "Effacer la discussion",
+    "typing": "écrit..."
+  }
+}

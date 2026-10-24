@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "pricing": "Pricing",
+    "login": "Login",
+    "register": "Get Started",
+    "logout": "Logout",
+    "docs": "API Docs",
+    "admin": "Admin Portal"
+  },
+  "common": {
+    "credits": "Credits",
+    "plan": "Current Plan",
+    "upgrade": "Upgrade Plan",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "success": "Operation successful",
+    "error": "An error occurred",
+    "search": "Search...",
+    "notifications": "Notifications",
+    "presence": "Active now"
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "activePlan": "Current Plan",
+    "availableCredits": "Available AI Credits",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "liveSync": "Live Sync Active"
+  },
+  "chat": {
+    "title": "AI Clinical & Practice Assistant",
+    "placeholder": "Type your medical query or appointment request...",
+    "send": "Send Message",
+    "clear": "Clear Conversation",
+    "typing": "is typing..."
+  }
+}

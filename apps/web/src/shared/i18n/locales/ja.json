@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "dashboard": "ダッシュボード",
+    "pricing": "料金プラン",
+    "login": "ログイン",
+    "register": "今すぐ始める",
+    "logout": "ログアウト",
+    "docs": "APIドキュメント",
+    "admin": "管理ポータル"
+  },
+  "common": {
+    "credits": "クレジット",
+    "plan": "現在のプラン",
+    "upgrade": "プランをアップグレード",
+    "save": "変更を保存",
+    "cancel": "キャンセル",
+    "loading": "読み込み中...",
+    "success": "処理が完了しました",
+    "error": "エラーが発生しました",
+    "search": "検索...",
+    "notifications": "通知",
+    "presence": "オンライン"
+  },
+  "dashboard": {
+    "welcome": "おかえりなさい",
+    "activePlan": "現在のプラン",
+    "availableCredits": "利用可能AIクレジット",
+    "recentActivity": "最近のアクティビティ",
+    "quickActions": "クイックアクション",
+    "liveSync": "リアルタイム同期中"
+  },
+  "chat": {
+    "title": "AI 医療＆予約アシスタント",
+    "placeholder": "健康相談や予約の希望を入力してください...",
+    "send": "送信",
+    "clear": "チャットをクリア",
+    "typing": "入力中..."
+  }
+}

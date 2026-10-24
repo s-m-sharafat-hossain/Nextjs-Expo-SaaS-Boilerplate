@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel de Control",
+    "pricing": "Precios",
+    "login": "Iniciar Sesión",
+    "register": "Comenzar",
+    "logout": "Cerrar Sesión",
+    "docs": "Docs API",
+    "admin": "Panel de Administración"
+  },
+  "common": {
+    "credits": "Créditos",
+    "plan": "Plan Actual",
+    "upgrade": "Mejorar Plan",
+    "save": "Guardar Cambios",
+    "cancel": "Cancelar",
+    "loading": "Cargando...",
+    "success": "Operación exitosa",
+    "error": "Ocurrió un error",
+    "search": "Buscar...",
+    "notifications": "Notificaciones",
+    "presence": "Activo ahora"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo",
+    "activePlan": "Plan Actual",
+    "availableCredits": "Créditos de IA Disponibles",
+    "recentActivity": "Actividad Reciente",
+    "quickActions": "Acciones Rápidas",
+    "liveSync": "Sincronización en Vivo"
+  },
+  "chat": {
+    "title": "Asistente Clínico Inteligente",
+    "placeholder": "Escribe tu consulta médica o solicitud de cita...",
+    "send": "Enviar Mensaje",
+    "clear": "Limpiar Conversación",
+    "typing": "está escribiendo..."
+  }
+}
