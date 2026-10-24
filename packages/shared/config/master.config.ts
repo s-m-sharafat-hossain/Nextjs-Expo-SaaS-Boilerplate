@@ -39,6 +39,16 @@ export const masterConfig = {
 
   // 2. DYNAMIC ROLE TERMINOLOGY & BRANDING
   roleLabels: {
+    superAdmin: {
+      key: "SUPER_ADMIN" as const,
+      singular: "Super Admin",
+      plural: "Super Admins",
+      badge: "Apex Platform Owner",
+      badgeColor: "#9333ea", // Purple
+      portalTitle: "Master Governance Console",
+      portalPath: "/super-admin",
+      description: "Root Platform Governance & Emergency Controls",
+    },
     admin: {
       key: "ADMIN" as const,
       singular: "Admin",
@@ -316,6 +326,11 @@ export const masterConfig = {
         demo: "/auth/demo",
         twoFactor: "/auth/2fa",
       },
+      superAdmin: {
+        dashboard: "/super-admin",
+        users: "/super-admin/users",
+        settings: "/super-admin",
+      },
       admin: {
         stats: "/admin/stats",
         users: "/admin/users",
@@ -415,9 +430,16 @@ export const masterConfig = {
 
   demoAccounts: [
     {
+      role: "SUPER_ADMIN" as const,
+      email: "superadmin@masterflow.io",
+      label: "Login as Super Admin (Apex)",
+      description: "Root platform governance, maintenance mode toggle, and settings control",
+      path: "/super-admin",
+    },
+    {
       role: "ADMIN" as const,
       email: "admin@demo.com",
-      label: "Login as Super Admin",
+      label: "Login as Operations Admin",
       description: "Full platform governance, KYC approvals, and financial ledger",
       path: "/admin",
     },

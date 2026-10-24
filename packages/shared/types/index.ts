@@ -1,6 +1,6 @@
 // packages/shared/types/index.ts
 
-export type RoleType = "ADMIN" | "PROVIDER" | "CONSUMER";
+export type RoleType = "SUPER_ADMIN" | "ADMIN" | "PROVIDER" | "CONSUMER";
 
 export type PaymentGatewayType =
   | "STRIPE"       // USA, UK, Europe, Global

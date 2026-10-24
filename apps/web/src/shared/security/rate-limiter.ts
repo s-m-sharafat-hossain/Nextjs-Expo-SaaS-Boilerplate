@@ -110,8 +110,13 @@ export class RateLimiter {
     const ip = this.getClientIp(req);
     const now = Date.now();
 
-    // 1. Admin Bypass: Super admin users bypass rate limits
-    if (userRole === "ADMIN" || req.headers.get("x-admin-bypass") === "true") {
+    // 1. Admin & Super Admin Bypass: Unlimited bypass for governance roles
+    if (
+      userRole === "SUPER_ADMIN" ||
+      userRole === "ADMIN" ||
+      req.headers.get("x-admin-bypass") === "true" ||
+      req.headers.get("x-super-admin-bypass") === "true"
+    ) {
       return {
         success: true,
         limit: 999999,

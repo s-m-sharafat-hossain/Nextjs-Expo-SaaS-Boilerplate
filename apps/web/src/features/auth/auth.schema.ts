@@ -51,7 +51,7 @@ export const registerSchema = z.object({
 });
 
 export const demoLoginSchema = z.object({
-  role: z.enum(["ADMIN", "PROVIDER", "CONSUMER"]),
+  role: z.enum(["SUPER_ADMIN", "ADMIN", "PROVIDER", "CONSUMER"]),
 });
 
 export const updateProfileSchema = z.object({

@@ -479,7 +479,7 @@ export class AuthService {
   /**
    * 1-Click Portfolio Demo Role Switcher
    */
-  static async demoLogin(role: "ADMIN" | "PROVIDER" | "CONSUMER") {
+  static async demoLogin(role: "SUPER_ADMIN" | "ADMIN" | "PROVIDER" | "CONSUMER") {
     const demoUser = await AuthRepository.findDemoUserByRole(role as Role);
     if (!demoUser) {
       throw new AppError(`Demo account for role '${role}' not initialized. Please run db:seed.`, 404);
@@ -494,7 +494,9 @@ export class AuthService {
         credits: demoUser.credits,
       },
       redirectPath:
-        role === "ADMIN"
+        role === "SUPER_ADMIN"
+          ? (siteConfig.roleLabels as any).superAdmin?.portalPath || "/super-admin"
+          : role === "ADMIN"
           ? siteConfig.roleLabels.admin.portalPath
           : role === "PROVIDER"
           ? siteConfig.roleLabels.provider.portalPath

@@ -494,6 +494,23 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
   type __Unused = __Check
 }
 
+// Validate ../../src/app/(dashboard)/super-admin/page.tsx
+{
+  type __IsExpected<Specific extends AppPageConfig<"/super-admin">> = Specific
+  const handler = {} as typeof import("../../src/app/(dashboard)/super-admin/page.js")
+  type __Check = __IsExpected<typeof handler>
+  
+  type __ParamMatchingValue =
+    typeof handler extends { unstable_paramMatching: infer Matcher } ? Matcher :
+    typeof handler extends { unstable_generateParamMatching: (...args: any[]) => infer Matcher } ? Awaited<Matcher> : {}
+  type __InvalidParamMatchingKeys = Exclude<keyof __ParamMatchingValue, keyof ParamMap["/super-admin"]>
+  type __AssertNoInvalidParamMatchingKeys<Invalid extends never> = Invalid
+  const __paramMatchingKeyCheck: __AssertNoInvalidParamMatchingKeys<__InvalidParamMatchingKeys> | undefined = undefined
+  void __paramMatchingKeyCheck
+  // @ts-ignore
+  type __Unused = __Check
+}
+
 // Validate ../../src/app/(public)/blog/[slug]/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/blog/[slug]">> = Specific
@@ -1320,6 +1337,26 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/v1/storage/upload">> = Specific
   const handler = {} as typeof import("../../src/app/api/v1/storage/upload/route.js")
+  type __Check = __IsExpected<typeof handler>
+  
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/api/v1/super-admin/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/v1/super-admin">> = Specific
+  const handler = {} as typeof import("../../src/app/api/v1/super-admin/route.js")
+  type __Check = __IsExpected<typeof handler>
+  
+  // @ts-ignore
+  type __Unused = __Check
+}
+
+// Validate ../../src/app/api/v1/super-admin/users/route.ts
+{
+  type __IsExpected<Specific extends RouteHandlerConfig<"/api/v1/super-admin/users">> = Specific
+  const handler = {} as typeof import("../../src/app/api/v1/super-admin/users/route.js")
   type __Check = __IsExpected<typeof handler>
   
   // @ts-ignore

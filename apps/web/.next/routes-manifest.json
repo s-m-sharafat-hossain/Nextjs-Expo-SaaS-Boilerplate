@@ -596,6 +596,18 @@
       "namedRegex": "^/api/v1/storage/upload(?:/)?$"
     },
     {
+      "page": "/api/v1/super-admin",
+      "regex": "^/api/v1/super\\-admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/super\\-admin(?:/)?$"
+    },
+    {
+      "page": "/api/v1/super-admin/users",
+      "regex": "^/api/v1/super\\-admin/users(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/v1/super\\-admin/users(?:/)?$"
+    },
+    {
       "page": "/api/v1/tasks",
       "regex": "^/api/v1/tasks(?:/)?$",
       "routeKeys": {},
@@ -774,6 +786,12 @@
       "regex": "^/signup(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/signup(?:/)?$"
+    },
+    {
+      "page": "/super-admin",
+      "regex": "^/super\\-admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/super\\-admin(?:/)?$"
     }
   ],
   "dataRoutes": [],

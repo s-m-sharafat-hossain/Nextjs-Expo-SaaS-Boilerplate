@@ -14,6 +14,9 @@ const PUBLIC_ROUTES = ["/", "/login", "/register", "/forgot-password", "/blog", 
 /** Routes requiring authentication but not a specific role */
 const PROTECTED_ROUTES = ["/dashboard", "/profile", "/settings"];
 
+/** Routes requiring SUPER_ADMIN role */
+const SUPER_ADMIN_ROUTES = ["/super-admin"];
+
 /** Routes requiring ADMIN role */
 const ADMIN_ROUTES = ["/admin"];
 
@@ -107,12 +110,28 @@ export async function proxy(req: NextRequest) {
   const isLoggedIn = Boolean(sessionCookie);
   const userRole = isLoggedIn ? getRoleFromCookie(req) : null;
 
+  // ── SUPER_ADMIN routes
+  if (isMatch(pathname, SUPER_ADMIN_ROUTES)) {
+    if (!isLoggedIn) {
+      return NextResponse.redirect(new URL("/login?from=" + pathname, req.url));
+    }
+    if (userRole !== "SUPER_ADMIN") {
+      const portalMap: Record<string, string> = {
+        ADMIN: "/admin",
+        PROVIDER: "/provider",
+        CONSUMER: "/consumer",
+      };
+      const redirect = (userRole && portalMap[userRole]) ?? "/dashboard";
+      return NextResponse.redirect(new URL(redirect, req.url));
+    }
+  }
+
   // ── ADMIN routes
   if (isMatch(pathname, ADMIN_ROUTES)) {
     if (!isLoggedIn) {
       return NextResponse.redirect(new URL("/login?from=" + pathname, req.url));
     }
-    if (userRole && userRole !== "ADMIN") {
+    if (userRole && userRole !== "ADMIN" && userRole !== "SUPER_ADMIN") {
       const portalMap: Record<string, string> = {
         PROVIDER: "/provider",
         CONSUMER: "/consumer",
@@ -127,8 +146,9 @@ export async function proxy(req: NextRequest) {
     if (!isLoggedIn) {
       return NextResponse.redirect(new URL("/login?from=" + pathname, req.url));
     }
-    if (userRole && userRole !== "PROVIDER") {
+    if (userRole && userRole !== "PROVIDER" && userRole !== "SUPER_ADMIN") {
       const portalMap: Record<string, string> = {
+        SUPER_ADMIN: "/super-admin",
         ADMIN: "/admin",
         CONSUMER: "/consumer",
       };
@@ -142,8 +162,9 @@ export async function proxy(req: NextRequest) {
     if (!isLoggedIn) {
       return NextResponse.redirect(new URL("/login?from=" + pathname, req.url));
     }
-    if (userRole && userRole !== "CONSUMER") {
+    if (userRole && userRole !== "CONSUMER" && userRole !== "SUPER_ADMIN") {
       const portalMap: Record<string, string> = {
+        SUPER_ADMIN: "/super-admin",
         ADMIN: "/admin",
         PROVIDER: "/provider",
       };
@@ -163,6 +184,7 @@ export async function proxy(req: NextRequest) {
   if (pathname === "/login" || pathname === "/register") {
     if (isLoggedIn) {
       const portalMap: Record<string, string> = {
+        SUPER_ADMIN: "/super-admin",
         ADMIN: "/admin",
         PROVIDER: "/provider",
         CONSUMER: "/consumer",

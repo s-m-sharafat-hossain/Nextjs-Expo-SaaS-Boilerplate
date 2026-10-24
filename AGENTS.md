@@ -7,7 +7,8 @@ This repository is structured as a production monorepo containing:
 ## Core Rules for `apps/web`
 1. **Architecture Pattern:** Feature-Based Extended MVC (`Model -> Service -> Controller -> Route/View`).
 2. **Feature Encapsulation:** Every business domain and role portal lives inside `apps/web/src/features/`:
-   - `src/features/portals/admin-portal/` (Super Admin Governance)
+   - `src/features/portals/super-admin-portal/` (Root Governance, Maintenance Toggle, Admin Role Management)
+   - `src/features/portals/admin-portal/` (Operations Admin Governance & KYC Verification)
    - `src/features/portals/provider-portal/` (Doctor / Vendor / Owner Partner)
    - `src/features/portals/consumer-portal/` (Patient / Customer / End-User)
    - Core Shared Modules: `auth/`, `workspaces/`, `billing/`, `credits/`, `ai-engine/`, `chat-n8n/`, `media/`, `reviews-disputes/`, `notifications-feedback/`

@@ -1,5 +1,5 @@
 var R=require("../../../../../chunks/[turbopack]_runtime.js")("server/app/api/v1/consumer/bookings/route.js")
-R.c("server/chunks/_0crmp2vo62o13._.js")
+R.c("server/chunks/_1iqgv-h7dayvk._.js")
 R.c("server/chunks/[root-of-the-server]__0ojiysl5p9515._.js")
 R.c("server/chunks/044u_web_src_features_portals_consumer-portal_consumer_controller_ts_0g5xv_s_xktkt._.js")
 R.c("server/chunks/node_modules_zod_v4_classic_errors_0tp0y-q7s2wq5.js")
